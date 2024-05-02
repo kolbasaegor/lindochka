@@ -2,7 +2,6 @@ import time
 
 from utils import from_csv_to_dict, get_random_passwords
 
-
 number_of_passwords = 1000000
 number_of_passwords_to_search = 5000
 

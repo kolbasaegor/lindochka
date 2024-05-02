@@ -3,7 +3,6 @@ import lindypy
 
 from utils import from_csv_to_dict, get_random_passwords, divide_list
 
-
 number_of_passwords = 100000
 number_of_passwords_to_search = 1000
 number_of_workers = 2
@@ -48,7 +47,7 @@ if __name__ == "__main__":
         for hashed_password in passwords_to_search:
             ts.out(('search_task', hashed_password, 'not_processed'))
 
-        for i in range(len(passwords_to_search)):
+        for _ in range(len(passwords_to_search)):
             res = ts.inp(('found_password', str, str))
             result.append((res[1], res[2]))
 

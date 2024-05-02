@@ -3,7 +3,6 @@ import csv
 
 from password_generator import PasswordGenerator
 
-
 file_prefix = 'data/hashed_passwords'
 number_of_passwords = 100
 
@@ -14,7 +13,7 @@ hashed_passwords = []
 
 print('Starting...')
 
-for i in range(number_of_passwords):
+for _ in range(number_of_passwords):
     password = pwo.generate()
 
     sha256.update(password.encode('utf-8'))
