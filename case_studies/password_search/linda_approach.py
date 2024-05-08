@@ -1,23 +1,11 @@
-import time
 import lindypy
+import multiprocessing
+import time
 
-from utils import from_csv_to_dict, get_random_passwords, divide_list
+from typing import List
 
-number_of_passwords = 100000
-number_of_passwords_to_search = 1000
-number_of_workers = 2
+from utils import divide_list
 
-db = from_csv_to_dict(f'data/hashed_passwords{number_of_passwords}.csv')
-
-passwords_to_search = get_random_passwords(
-    db=db,
-    num=number_of_passwords_to_search,
-    seed=52
-)
-
-result = []
-
-# --------------------------------------------------------------------
 
 def worker(ts, part_of_passwords):
     for password in part_of_passwords:
@@ -31,14 +19,21 @@ def worker(ts, part_of_passwords):
         ts.out(('found_password', answer[1], answer[2]))
 
 
-if __name__ == "__main__":
-    print(f'{number_of_passwords=}\n{number_of_passwords_to_search=}\n{number_of_workers=}\n')
+def search_password_linda(
+    passwords_to_search: List[str],
+    passwords: List[dict[str, str]],
+    number_of_workers: int = -1
+) -> List[tuple[str, str]]:
     
-    parts = divide_list(db, number_of_workers)
+    number_of_workers = number_of_workers \
+    if number_of_workers > 0 else multiprocessing.cpu_count()
+
+    result = []
+
+    parts = divide_list(passwords, number_of_workers)
 
     with lindypy.tuplespace() as ts:
 
-        print('[start]')
         start = time.perf_counter()
 
         for i in range(len(parts)):
@@ -52,6 +47,5 @@ if __name__ == "__main__":
             result.append((res[1], res[2]))
 
         end = time.perf_counter()
-        print('[end]')
 
-    print('Search time =', end - start, 's')
+    return result, end - start

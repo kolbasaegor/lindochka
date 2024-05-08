@@ -3,6 +3,7 @@ import csv
 
 from password_generator import PasswordGenerator
 
+
 file_prefix = 'data/hashed_passwords'
 number_of_passwords = 100
 

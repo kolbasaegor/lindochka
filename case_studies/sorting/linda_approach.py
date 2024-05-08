@@ -1,19 +1,12 @@
-import os
+import multiprocessing
 import operator
 import time
-import random
 import lindypy
+
+from typing import List
 
 from utils import merge, merge_sort, divide_list
 
-random.seed(52)
-
-array_size = 10000000
-number_of_workers = 4
-
-array = [random.randint(-1000, 1000) for _ in range(array_size)]
-
-# --------------------------------------------------------------------
 
 def worker(ts, initial_index, inital_array):
     sorted_array = merge_sort(inital_array)
@@ -29,11 +22,17 @@ def worker(ts, initial_index, inital_array):
         ))
 
 
-if __name__ == "__main__":
-
+def merge_sort_linda(
+    array: List[int],
+    number_of_workers: int = -1
+) -> List[int]:
+    
+    number_of_workers = number_of_workers \
+    if number_of_workers > 0 else multiprocessing.cpu_count()
+    
     parts = divide_list(array, number_of_workers)
     data = []
-    
+
     with lindypy.tuplespace() as ts:
         
         start = time.perf_counter()
@@ -53,10 +52,8 @@ if __name__ == "__main__":
 
             data = [
                 list(ts.inp(('merged', i // 2, object))[2]) for i in range(0, len(data), 2)
-            ] + ([extra] if extra else [])            
+            ] + ([extra] if extra else [])
 
-        end = time.perf_counter()
+        end = time.perf_counter()            
 
-    # print('result:', data[0])
-    print(f'{end - start} s')
-
+    return data, end - start
