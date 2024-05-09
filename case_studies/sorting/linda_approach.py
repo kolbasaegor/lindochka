@@ -1,8 +1,5 @@
-import multiprocessing
 import operator
-import time
 import lindypy
-
 from typing import List
 
 from utils import merge, merge_sort, divide_list
@@ -24,19 +21,16 @@ def worker(ts, initial_index, inital_array):
 
 def merge_sort_linda(
     array: List[int],
-    number_of_workers: int = -1
+    number_of_workers: int = 1
 ) -> List[int]:
     
-    number_of_workers = number_of_workers \
-    if number_of_workers > 0 else multiprocessing.cpu_count()
+    assert number_of_workers > 0
     
     parts = divide_list(array, number_of_workers)
     data = []
 
     with lindypy.tuplespace() as ts:
         
-        start = time.perf_counter()
-
         for i in range(number_of_workers):
             ts.eval(worker, i, parts[i])
 
@@ -54,6 +48,4 @@ def merge_sort_linda(
                 list(ts.inp(('merged', i // 2, object))[2]) for i in range(0, len(data), 2)
             ] + ([extra] if extra else [])
 
-        end = time.perf_counter()            
-
-    return data, end - start
+    return data

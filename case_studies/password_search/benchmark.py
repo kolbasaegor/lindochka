@@ -9,7 +9,7 @@ from linda_approach import search_password_linda
 random.seed(52)
 
 number_of_passwords = 1000000
-number_of_passwords_to_search = 5000
+number_of_passwords_to_search = 1000
 
 db = from_csv_to_dict(f'data/hashed_passwords{number_of_passwords}.csv')
 
@@ -19,9 +19,16 @@ passwords_to_search = get_random_passwords(
 )
 
 if __name__ == "__main__":
+    print('Number of passwords:', number_of_passwords)
+    print('Number of passwords to search:', number_of_passwords_to_search)
+    print('----------------------------------')
 
-    _, time_ = search_passwords_sequential(passwords_to_search, db)
-    print("t1 =", time_, "s")
+    start = time.perf_counter()
+    search_password_linda(passwords_to_search, db, number_of_workers=4)
+    end = time.perf_counter()
+    print("linda:", end - start, "s")
 
-    _, time_ = search_password_linda(passwords_to_search, db, number_of_workers=4)
-    print("t2 =", time_, "s")
+    start = time.perf_counter()
+    search_passwords_sequential(passwords_to_search, db)
+    end = time.perf_counter()
+    print("sequential:", end - start, "s")
