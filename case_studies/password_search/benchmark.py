@@ -2,8 +2,10 @@ import time
 import random
 
 from utils import from_csv_to_dict, get_random_passwords
+
 from sequential_approach import search_passwords_sequential
-from linda_approach import search_password_linda
+from linda_approach import search_passwords_linda
+from interprocess_communication import search_passwords_parallel
 
 
 random.seed(52)
@@ -24,9 +26,14 @@ if __name__ == "__main__":
     print('----------------------------------')
 
     start = time.perf_counter()
-    search_password_linda(passwords_to_search, db, number_of_workers=4)
+    search_passwords_linda(passwords_to_search, db, number_of_workers=4)
     end = time.perf_counter()
     print("linda:", end - start, "s")
+
+    start = time.perf_counter()
+    search_passwords_parallel(passwords_to_search, db, number_of_workers=4)
+    end = time.perf_counter()
+    print("interprocess communication:", end - start, "s")
 
     start = time.perf_counter()
     search_passwords_sequential(passwords_to_search, db)

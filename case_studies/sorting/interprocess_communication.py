@@ -1,5 +1,5 @@
-import multiprocessing
 import math
+from multiprocessing import Pool
 from typing import List
 
 
@@ -39,7 +39,7 @@ def merge_sort_parallel(
     
     assert number_of_workers > 0
 
-    pool = multiprocessing.Pool(processes=number_of_workers)
+    pool = Pool(processes=number_of_workers)
     size = int(math.ceil(float(len(array)) / number_of_workers))
 
     array = [array[i * size:(i + 1) * size] for i in range(number_of_workers)]
@@ -50,5 +50,8 @@ def merge_sort_parallel(
 
         array = [(array[i], array[i + 1]) for i in range(0, len(array), 2)]
         array = pool.map(merge, array) + ([extra] if extra else [])
+
+    pool.close()
+    pool.join()
 
     return array[0]

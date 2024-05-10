@@ -13,7 +13,7 @@ def worker(ts, all_passwords):
                 break
 
 
-def search_password_linda(
+def search_passwords_linda(
     passwords_to_search: List[str],
     passwords: List[dict[str, str]],
     number_of_workers: int = 1
