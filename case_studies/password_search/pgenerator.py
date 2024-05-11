@@ -5,7 +5,7 @@ from password_generator import PasswordGenerator
 
 
 file_prefix = 'data/hashed_passwords'
-number_of_passwords = 100
+number_of_passwords = 1000
 
 pwo = PasswordGenerator()
 sha256 = hashlib.sha256()
@@ -24,8 +24,6 @@ for _ in range(number_of_passwords):
         'password': password,
         'hashed_password': hashed_password
     })
-
-print(hashed_passwords)
 
 with open(f'{file_prefix}{number_of_passwords}.csv', 'w', newline='') as file:
     writer = csv.DictWriter(

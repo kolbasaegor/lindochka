@@ -10,7 +10,7 @@ from interprocess_communication import search_passwords_parallel
 
 random.seed(52)
 
-number_of_passwords = 100000
+number_of_passwords = 1000
 number_of_passwords_to_search = 100 # на измене
 
 db = from_csv_to_dict(f'data/hashed_passwords{number_of_passwords}.csv')
