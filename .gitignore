@@ -3,4 +3,4 @@ __pycache__
 /venv
 /windows_venv
 
-case_studies/password_search/data/
+case_studies/password_search/data/*

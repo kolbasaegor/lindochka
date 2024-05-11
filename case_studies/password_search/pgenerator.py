@@ -1,11 +1,12 @@
 import hashlib
 import csv
+import sys
 
 from password_generator import PasswordGenerator
 
 
 file_prefix = 'data/hashed_passwords'
-number_of_passwords = 1000
+number_of_passwords = int(sys.argv[1])
 
 pwo = PasswordGenerator()
 sha256 = hashlib.sha256()
