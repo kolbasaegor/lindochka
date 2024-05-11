@@ -1,3 +1,4 @@
+import math
 import pandas as pd
 import random
 
@@ -18,13 +19,6 @@ def get_random_passwords(db: List[dict[str, str]], num: int) -> List[str]:
 
 
 def divide_list(seq, num):
-    avg = len(seq) / float(num)
-    out = []
-    last = 0.0
+    size = int(math.ceil(float(len(seq)) / num))
 
-    while last < len(seq):
-        out.append(seq[int(last):int(last + avg)])
-        last += avg
-
-    return out
-         
+    return  [seq[i * size:(i + 1) * size] for i in range(num)]

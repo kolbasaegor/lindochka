@@ -1,15 +1,7 @@
+import math
 import operator
 
-def divide_list(seq, num):
-    avg = len(seq) / float(num)
-    out = []
-    last = 0.0
-
-    while last < len(seq):
-        out.append(seq[int(last):int(last + avg)])
-        last += avg
-
-    return out
+from typing import List
 
 
 def merge_sort(L, compare=operator.lt):
@@ -43,3 +35,9 @@ def merge(left, right, compare):
         j += 1
 
     return result
+
+
+def divide_list(seq, num):
+    size = int(math.ceil(float(len(seq)) / num))
+
+    return  [seq[i * size:(i + 1) * size] for i in range(num)]
